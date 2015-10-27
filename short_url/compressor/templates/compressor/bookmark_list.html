@@ -1,4 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h2>All Bookmarks</h2>
+                    </div>
+                    <div class="panel-body">
+                    <div class="panel panel-danger">
+                            {% for bookmark in object_list %}
+                            <div class="panel-heading">
+                                <h4>{{ bookmark.title}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h6> Created by: {{ bookmark.author }}</h6>
+                                <h6>
+                                    <form action="{% url 'click' bookmark.id %}" method="post">
+                                        {% csrf_token %}
+                                        <a href="{{ bookmark.long_url }}">{{ bookmark.short_url }}</a>
+                                    </form>
+                                </h6>
+                                <h6>{{ bookmark.description }}</h6>
+                                <h6>{{ bookmark.click_count }}</h6>
+                            </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 {% endblock %}
