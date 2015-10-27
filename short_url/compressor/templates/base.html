@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to Zach's URL Compressor</h1>
+    {% if not request.user.id %}
+        <button class="button-default"><a href="{% url 'login' %}">Login</a></button>
+        {% else %}
+        <button class="button-default"><a href="{% url 'logout' %}?next=/">Logout</a></button>
+        <button class="button-default"><a href="{% url 'bookmark_create' %}">Make Bookmark</a></button>
+    {% endif %}
+    {% block content %}
+
+
+    {% endblock %}
+</div>
+</body>
+</html>

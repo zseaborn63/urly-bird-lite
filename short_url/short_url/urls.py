@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from compressor.views import default_view
+from django.contrib.auth.decorators import login_required
+from compressor.views import default_view, BookmarkListView, BookmarkCreateView, BookmarkDetailView
 
 urlpatterns = [
+    url('^accounts/', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', default_view, name='default')
+    url(r'^$', BookmarkListView.as_view(), name='bookmark_list'),
+    url(r'^create/$', login_required(BookmarkCreateView.as_view()), name="bookmark_create"),
+    url(r'^(?P<pk>\d+)$', BookmarkDetailView.as_view(), name="bookmark_detail")
 ]
