@@ -1,4 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h2>{{ object.title }}</h2>
+        </div>
+        <div class="panel-body">
+            <h4>Creator:
+                <a href="{% url 'user_bookmark_list' bookmark.author_id %}">
+                    {{ object.author }}
+                </a>
+            </h4>
+            <h4>
+                <form action="{% url 'click' bookmark.id %}" method="post">
+                    {% csrf_token %}
+                    <a href="{{ bookmark.long_url }}">
+                        <input type="submit" value="{{ object.short_url }}">
+                    </a>
+                </form>
+            </h4>
+            <h4>Date Created: {{ object.created }}</h4>
+            <h4>Number of Clicks: {{ object.click_count }}</h4>
+            <h4>Description of Link: {{ object.description }}</h4>
+            {% if request.user == bookmark.author %}
+                <button class="button-default">
+                    <a href="{% url 'bookmark_update' bookmark.id %}">
+                        Update This Bookmark
+                    </a>
+                </button>
+                <button class="button-default">
+                    <a href="{% url 'bookmark_delete ' bookmark.id%}">
+                        Delete This Bookmark
+                    </a>
+                </button>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

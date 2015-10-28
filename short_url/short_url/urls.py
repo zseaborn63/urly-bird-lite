@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from compressor.views import default_view, BookmarkListView, BookmarkCreateView, BookmarkDetailView, \
-    UserBookmarkListView, ClickView
+    UserBookmarkListView, ClickView, BookmarkUpdateView, BookmarkDeleteView
 
 urlpatterns = [
     url('^accounts/', include('django.contrib.auth.urls')),
@@ -26,5 +26,8 @@ urlpatterns = [
     url(r'^create/$', login_required(BookmarkCreateView.as_view()), name="bookmark_create"),
     url(r'^bookmark/(?P<pk>\d+)$', BookmarkDetailView.as_view(), name="bookmark_detail"),
     url(r'^user/(?P<pk>\d+)$', UserBookmarkListView.as_view(), name="user_bookmark_list"),
-    url(r'click/(?P<bookmark_id>\d+)/$', ClickView.as_view(), name="click")
+    url(r'click/(?P<bookmark_id>\d+)/$', ClickView.as_view(), name="click"),
+    url(r'^update/(?P<pk>\d+)$', login_required(BookmarkUpdateView.as_view()), name="bookmark_update"),
+    url(r'^delete/(?P<pk>\d+)$', login_required(BookmarkDeleteView.as_view()), name="bookmark_delete ")
+
 ]

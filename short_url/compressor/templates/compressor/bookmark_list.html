@@ -12,18 +12,42 @@
                     <div class="panel panel-danger">
                             {% for bookmark in object_list %}
                             <div class="panel-heading">
-                                <h4>{{ bookmark.title}}</h4>
+                                <h4>
+                                    <a href="{% url 'bookmark_detail' bookmark.id %}">
+                                        {{ bookmark.title}}
+                                    </a>
+                                </h4>
                             </div>
                             <div class="panel-body">
-                                <h6> Created by: {{ bookmark.author }}</h6>
+                                <h6> Created by:
+                                    <a href="{% url 'user_bookmark_list' bookmark.author_id%}">
+                                        {{ bookmark.author }}
+                                    </a>
+                                </h6>
                                 <h6>
                                     <form action="{% url 'click' bookmark.id %}" method="post">
                                         {% csrf_token %}
-                                        <a href="{{ bookmark.long_url }}">{{ bookmark.short_url }}</a>
+                                        <a href="{{ bookmark.long_url }}">
+                                            <input type="submit" value="{{ bookmark.short_url }}">
+                                        </a>
                                     </form>
                                 </h6>
                                 <h6>{{ bookmark.description }}</h6>
-                                <h6>{{ bookmark.click_count }}</h6>
+                                <h6>clicks: {{ bookmark.click_count }}</h6>
+                                <h6>
+                                    {% if request.user == bookmark.author %}
+                                        <button class="button-default">
+                                            <a href="{% url 'bookmark_update' bookmark.id %}">
+                                                Update Your Bookmark
+                                            </a>
+                                        </button>
+                                        <button class="button-default">
+                                            <a href="{% url 'bookmark_delete ' bookmark.id%}">
+                                                Delete This Bookmark
+                                            </a>
+                                        </button>
+                                    {% endif %}
+                                </h6>
                             </div>
                             {% endfor %}
                             </div>

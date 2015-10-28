@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import ListView, View, DetailView, CreateView
+from django.views.generic import ListView, View, DetailView, CreateView, UpdateView, DeleteView
 from compressor.models import Bookmark, Click
 from hashlib import md5
 
@@ -41,8 +41,20 @@ class BookmarkCreateView(CreateView):
         return super().form_valid(form)
 
 class ClickView(View):
+
     def post(self, request, bookmark_id):
         bookmark = Bookmark.objects.get(id=bookmark_id)
-        click_num = Click.click_nums + 1
-        Click.objects.create(clicker=request.user, bookmark=bookmark, click_nums=click_num)
-        return HttpResponseRedirect(Bookmark.long_url)
+        Click.objects.create(clicker=request.user, bookmark=bookmark)
+        return HttpResponseRedirect(bookmark.long_url)
+
+class BookmarkUpdateView(UpdateView):
+    model = Bookmark
+    fields =  ["title", "description"]
+
+    def get_queryset(self):
+        bookmark_id = self.kwargs.get("pk")
+        return self.model.objects.filter(id=bookmark_id)
+
+class BookmarkDeleteView(DeleteView):
+    model = Bookmark
+    success_url = '/'
