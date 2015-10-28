@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'click/(?P<bookmark_id>\d+)/$', ClickView.as_view(), name="click"),
     url(r'^update/(?P<pk>\d+)$', login_required(BookmarkUpdateView.as_view()), name="bookmark_update"),
     url(r'^delete/(?P<pk>\d+)$', login_required(BookmarkDeleteView.as_view()), name="bookmark_delete "),
-    url(r'^zach/(?P<shortened_url>\w+)$', RedirectView.as_view(), name="redirect")
+    url(r'^zach/(?P<bookmark_id>\w+)$', ClickView.as_view(), name="redirect")
 ]

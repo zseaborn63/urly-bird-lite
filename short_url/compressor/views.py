@@ -47,9 +47,14 @@ class ClickView(View):
         Click.objects.create(clicker=request.user, bookmark=bookmark)
         return HttpResponseRedirect(bookmark.long_url)
 
+    def get(self, request, bookmark_id):
+        bookmark = Bookmark.objects.get(short_url=bookmark_id)
+        return HttpResponseRedirect(bookmark.long_url)
+
 class BookmarkUpdateView(UpdateView):
     model = Bookmark
     fields =  ["title", "description"]
+    success_url = '/'
 
     def get_queryset(self):
         bookmark_id = self.kwargs.get("pk")
@@ -61,7 +66,6 @@ class BookmarkDeleteView(DeleteView):
 
 class RedirectView(View):
 
-    def post(self, request, shortend_url):
-        _bookmark = Bookmark.objects.get(short_url=shortend_url)
-        long_url = _bookmark.long_url
-        return HttpResponseRedirect(long_url)
+    def get(self, request, shortend_url):
+        bookmark = Bookmark.objects.get(short_url=shortend_url)
+        return HttpResponseRedirect(bookmark.long_url)

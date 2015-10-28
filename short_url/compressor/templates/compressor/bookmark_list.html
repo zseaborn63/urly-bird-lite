@@ -34,7 +34,7 @@
                                 </h6>
                                 <h6>{{ bookmark.description }}</h6>
                                 <h6>clicks: {{ bookmark.click_count }}</h6>
-                                <H6>{{ bookmark.short_url }}</H6>
+                                <H6>For copy and paste: http://localhost:8000/zach/{{ bookmark.short_url }}</H6>
                                 <h6>
                                     {% if request.user == bookmark.author %}
                                         <button class="button-default">
