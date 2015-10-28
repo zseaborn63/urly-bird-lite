@@ -1,9 +1,12 @@
+from django.contrib.auth import forms, login
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic import ListView, View, DetailView, CreateView, UpdateView, DeleteView
+from compressor.forms.forms import UserForm
 from compressor.models import Bookmark, Click
 from hashlib import md5
 
@@ -44,7 +47,10 @@ class ClickView(View):
 
     def post(self, request, bookmark_id):
         bookmark = Bookmark.objects.get(id=bookmark_id)
-        Click.objects.create(clicker=request.user, bookmark=bookmark)
+        if request.user.id:
+            Click.objects.create(clicker=request.user, bookmark=bookmark)
+        else:
+            Click.objects.create(bookmark=bookmark)
         return HttpResponseRedirect(bookmark.long_url)
 
     def get(self, request, bookmark_id):
@@ -69,3 +75,39 @@ class RedirectView(View):
     def get(self, request, shortend_url):
         bookmark = Bookmark.objects.get(short_url=shortend_url)
         return HttpResponseRedirect(bookmark.long_url)
+
+class SignupUser(CreateView):
+    model = User
+    fields = ['username', 'password']
+    success_url = '/'
+
+def add_user(request):
+    if request.method == "POST":
+        form = UserForm(request.POST)
+        if form.is_valid():
+            new_user = User.objects.create_user(**form.cleaned_data)
+            login(new_user)
+            # redirect, or however you want to get to the main view
+            return HttpResponseRedirect('/')
+    else:
+        form = UserForm()
+
+    return render(request, 'auth/user_form.html', {'form': form})
+
+def register(request):
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            registered = True
+        else:
+            print( user_form.errors)
+    else:
+        user_form = UserForm()
+    return render(request,
+            'auth/user_form.html',
+            {'user_form': user_form,
+            'registered': registered})

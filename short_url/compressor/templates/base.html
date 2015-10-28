@@ -12,6 +12,7 @@
     <button class="button-default"><a href="{% url 'bookmark_list' %}">All Bookmarks</a></button>
     {% if not request.user.id %}
         <button class="button-default"><a href="{% url 'login' %}">Login</a></button>
+        <button class="button-default"><a href="{% url 'signup' %}">Sign Up</a></button>
         {% else %}
         <button class="button-default"><a href="{% url 'logout' %}?next=/">Logout</a></button>
         <button class="button-default"><a href="{% url 'bookmark_create' %}">Make Bookmark</a></button>
