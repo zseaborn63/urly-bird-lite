@@ -1,4 +1,5 @@
 from django.contrib.auth import forms, login
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.http import HttpResponse, HttpResponseRedirect
@@ -78,7 +79,7 @@ class RedirectView(View):
 
 class SignupUser(CreateView):
     model = User
-    fields = ['username', 'password']
+    form_class = UserCreationForm
     success_url = '/'
 
 def add_user(request):

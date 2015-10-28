@@ -31,5 +31,5 @@ urlpatterns = [
     url(r'^update/(?P<pk>\d+)$', login_required(BookmarkUpdateView.as_view()), name="bookmark_update"),
     url(r'^delete/(?P<pk>\d+)$', login_required(BookmarkDeleteView.as_view()), name="bookmark_delete "),
     url(r'^zach/(?P<bookmark_id>\w+)$', ClickView.as_view(), name="redirect"),
-    url(r'^user_create/$', register, name='signup')
+    url(r'^user_create/$', SignupUser.as_view(), name='signup')
 ]
