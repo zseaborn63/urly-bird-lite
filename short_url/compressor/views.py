@@ -34,9 +34,9 @@ class BookmarkCreateView(CreateView):
         model = form.save(commit=False)
         model.author = self.request.user
         _coded_url = bytes(form.instance.long_url, 'utf8')
-        m = md5(bytes(_coded_url))
+        m = md5(_coded_url)
         _short_code = m.hexdigest()
-        form.instance.short_url = "hpz:/" + _short_code[:7]
+        form.instance.short_url = "hpz" + _short_code[:7]
         model.short_url = form.instance.short_url
         return super().form_valid(form)
 
@@ -58,3 +58,10 @@ class BookmarkUpdateView(UpdateView):
 class BookmarkDeleteView(DeleteView):
     model = Bookmark
     success_url = '/'
+
+class RedirectView(View):
+
+    def post(self, request, shortend_url):
+        _bookmark = Bookmark.objects.get(short_url=shortend_url)
+        long_url = _bookmark.long_url
+        return HttpResponseRedirect(long_url)
