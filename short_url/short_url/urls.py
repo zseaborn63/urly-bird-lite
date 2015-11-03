@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^delete/(?P<pk>\d+)$', login_required(BookmarkDeleteView.as_view()), name="bookmark_delete "),
     url(r'^zach/(?P<bookmark_id>\w+)$', ClickView.as_view(), name="redirect"),
     url(r'^user_create/$', SignupUser.as_view(), name='signup'),
-    url(r'^api/', include('api_compressor.urls'))
+    url(r'^api/', include('api_compressor.urls')),
+
 ]
