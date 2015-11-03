@@ -16,9 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from compressor.views import default_view, BookmarkListView, BookmarkCreateView, BookmarkDetailView, \
-    UserBookmarkListView, ClickView, BookmarkUpdateView, BookmarkDeleteView, RedirectView, SignupUser, add_user, \
-    register
+from compressor.views import BookmarkListView, BookmarkCreateView, BookmarkDetailView, \
+    UserBookmarkListView, ClickView, BookmarkUpdateView, BookmarkDeleteView,  SignupUser
 
 urlpatterns = [
     url('^accounts/', include('django.contrib.auth.urls')),
@@ -31,5 +30,6 @@ urlpatterns = [
     url(r'^update/(?P<pk>\d+)$', login_required(BookmarkUpdateView.as_view()), name="bookmark_update"),
     url(r'^delete/(?P<pk>\d+)$', login_required(BookmarkDeleteView.as_view()), name="bookmark_delete "),
     url(r'^zach/(?P<bookmark_id>\w+)$', ClickView.as_view(), name="redirect"),
-    url(r'^user_create/$', SignupUser.as_view(), name='signup')
+    url(r'^user_create/$', SignupUser.as_view(), name='signup'),
+    url(r'^api/', include('api_compressor.urls'))
 ]
